@@ -9,4 +9,4 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>,
 )
-import './index.css';
+// import './index.css';

@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 
 const Sidebar = () => {
-  const [active, setActive] = useState("/home");
+  const [active, setActive] = useState("/");
   const navigate = useNavigate();
 
   const menuItems = [

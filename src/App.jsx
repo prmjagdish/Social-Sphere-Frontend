@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <div className="App">
-        <BrowserRouter basename="/Social-App" >
+        <BrowserRouter>
           <AppRoutes />
         </BrowserRouter>
       </div>
