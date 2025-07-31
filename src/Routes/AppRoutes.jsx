@@ -15,15 +15,15 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/singin" element={<SinginPage/> }/>
-      {/* <Route path="/signup" element={<SingupPage/> }/>
+      <Route path="/signup" element={<SingupPage/> }/>
       <Route path="/" element={<Layout />}> 
-        <Route path="/home" element={<HomePage />} /> */}
-        {/* <Route path="/reels" element={<ReelsPage />} />
+        <Route path="/home" element={<HomePage />} /> 
+        <Route path="/reels" element={<ReelsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/notifications" element={<Notification />} />
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/saved" element={<SavedPage />} /> */}
-      {/* </Route> */}
+        <Route path="/saved" element={<SavedPage />} />
+      </Route>
     </Routes>  
   );
 };
