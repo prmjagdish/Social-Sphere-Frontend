@@ -31,15 +31,23 @@ const SigninPage = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:8080/api/signin", {
-        username: formData.email,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        "http://localhost:8080/auth/login",
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = response.data;
+      console.log(data);
+      localStorage.setItem("token", data.token);
+      navigate("/home");
 
-      console.log("Login success:", res.data);
-      // Save token if you get one
-      //localStorage.setItem("token", res.data.token);
-      navigate("/home"); // or your dashboard
     } catch (err) {
       console.error("Login error:", err.response?.data || err.message);
       alert(err.response?.data || "Login failed.");

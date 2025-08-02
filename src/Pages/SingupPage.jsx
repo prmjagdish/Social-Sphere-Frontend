@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaGoogle, FaFacebookF } from "react-icons/fa";
+import { FaGoogle, FaFacebookF, FaCheckCircle } from "react-icons/fa";
 import Button from "../Components/FormElements/Button";
 import InputField from "../Components/FormElements/InputField";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,14 +11,69 @@ const SigninPage = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    otp: "",
   });
 
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
+
+  const [isOtpSent, setIsOtpSent] = useState(false);
+
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: "" });
+  };
+
+  const sendOtpHandler = async () => {
+    if (!formData.email.trim()) {
+      setErrors({ ...errors, email: "Email is required before sending OTP" });
+      return;
+    }
+
+    try {
+      const res = await axios.post("http://localhost:8080/auth/send-otp", {
+        email: formData.email,
+      });
+
+      alert(res.data);
+      // alert("OTP sent successfully!");
+      setIsOtpSent(true);
+    } catch (error) {
+      console.error(
+        "Error sending OTP:",
+        error.response?.data || error.message
+      );
+      alert("Failed to send OTP. Try again.");
+    }
+  };
+
+  const otpVerifyHandler = async () => {
+    if (!formData.otp.trim()) {
+      setErrors({ ...errors, otp: "Enter the OTP to verify" });
+      return;
+    }
+
+    try {
+      const res = await axios.post("http://localhost:8080/auth/verify-otp", {
+        email: formData.email,
+        otp: formData.otp,
+      });
+
+      if (res.data.verified) {
+        // alert("OTP Verified Successfully!");
+        setIsOtpVerified(true);
+      } else {
+        alert("Invalid OTP!");
+        setIsOtpVerified(false);
+      }
+    } catch (error) {
+      console.error(
+        "Error verifying OTP:",
+        error.response?.data || error.message
+      );
+      alert("OTP verification failed.");
+    }
   };
 
   const validate = () => {
@@ -26,35 +81,44 @@ const SigninPage = () => {
     if (!formData.fullName.trim()) newErrors.fullName = "Full name is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
     if (!formData.password.trim()) newErrors.password = "Password is required";
-    if (!formData.confirmPassword.trim()) newErrors.confirmPassword = "Confirm your password";
-    else if (formData.password !== formData.confirmPassword) 
+    if (!formData.confirmPassword.trim())
+      newErrors.confirmPassword = "Confirm your password";
+    if (!formData.otp.trim()) newErrors.otp = "OTP not verify";
+    else if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = "Passwords do not match";
-    
     return newErrors;
-  }
-
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
+    otpVerifyHandler();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
     try {
-      const res = await axios.post("http://localhost:8080/api/singup", {
-        username: formData.email,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        "http://localhost:8080/auth/signup",
+        {
+          username: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      console.log("Login success:", res.data);
-      // Save token if you get one
-      //localStorage.setItem("token", res.data.token);
-    //   navigate("/home"); // or your dashboard
+      const data = response.data;
+      console.log(data);
+      navigate("/");
     } catch (err) {
       console.error("Login error:", err.response?.data || err.message);
-      alert(err.response?.data || "Login failed.");
+      alert(err.response?.data?.message || "Login failed.");
     }
   };
 
@@ -91,12 +155,35 @@ const SigninPage = () => {
             label="Email"
             id="email"
             name="email"
-            type="text"
+            type="email"
             value={formData.email}
             onChange={handleChange}
             error={errors.email}
-            placeholder="Username or email"
+            placeholder="Enter email"
           />
+
+          <div className="flex justify-end text-xs" onClick={sendOtpHandler}>
+            <a href="#" className="text-blue-600 hover:underline">
+              Send OTP
+            </a>
+          </div>
+
+          <InputField
+            label="Enter OTP"
+            id="otp"
+            name="otp"
+            type="text"
+            value={formData.otp}
+            onChange={handleChange}
+            error={errors.otp}
+            placeholder="Enter OTP received in email"
+          />
+
+          {/* <div className="flex justify-end text-xs" onClick={otpVerifyHandler}>
+            <a href="#" className="text-blue-600 hover:underline">
+              Verify OTP
+            </a>
+          </div> */}
 
           <InputField
             label="Password"
@@ -120,16 +207,10 @@ const SigninPage = () => {
             placeholder="Confirm password"
           />
 
-          <div className="flex justify-end text-xs">
-            <a href="#" className="text-blue-600 hover:underline">
-              Forgot password?
-            </a>
-          </div>
-
           <Button ButtonName="Sign Up" />
         </form>
 
-        <div className="flex items-center text-xs text-gray-400 dark:text-gray-600 gap-2 mt-3">
+        {/* <div className="flex items-center text-xs text-gray-400 dark:text-gray-600 gap-2 mt-3">
           <hr className="flex-grow border-t border-gray-300 dark:border-gray-700" />
           <span>OR</span>
           <hr className="flex-grow border-t border-gray-300 dark:border-gray-700" />
@@ -142,11 +223,11 @@ const SigninPage = () => {
           <button className="flex-1 flex items-center justify-center gap-2 py-1.5 border border-gray-300 dark:border-gray-800 rounded-md text-xs text-blue-700 hover:bg-blue-50 dark:hover:bg-gray-800">
             <FaFacebookF className="text-sm" /> Facebook
           </button>
-        </div>
+        </div> */}
 
         <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-2">
           Already have an account ?{" "}
-          <Link to="/singin" className="text-blue-600 hover:underline">
+          <Link to="/" className="text-blue-600 hover:underline">
             Sign In
           </Link>
         </p>
