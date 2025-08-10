@@ -10,7 +10,7 @@ import {
   FaBell,
   FaCog,
 } from "react-icons/fa";
-
+import { FiPlusSquare } from "react-icons/fi";
 const Sidebar = () => {
   const [active, setActive] = useState("/");
   const navigate = useNavigate();
@@ -19,20 +19,20 @@ const Sidebar = () => {
     { label: "Home", icon: <FaHome />, path: "/home" },
     { label: "Search", icon: <FaSearch />, path: "/search" },
     { label: "Reels", icon: <FaVideo />, path: "/reels" },
-    { label: "Saved", icon: <FaBookmark />, path: "/saved" },
+    { label: "Create", icon: <FiPlusSquare />, path: "/create" },
     { label: "Profile", icon: <FaUser />, path: "/profile" },
     { label: "Notifications", icon: <FaBell />, path: "/notifications" },
-    { label: "Settings", icon: <FaCog />, path: "/settings" },
+    // { label: "Settings", icon: <FaCog />, path: "/settings" },
   ];
 
   return (
     <>
-      {/* Desktop Sidebar */}
+      
       <aside className="hidden md:flex flex-col w-60 h-screen bg-gray-900 text-white shadow-lg">
         {/* Logo/Header */}
         <div className="px-6 py-6 border-b border-white/10">
           <h1 className="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-purple-400 to-indigo-500 text-transparent bg-clip-text">
-            Lumino
+            Social Sphere
           </h1>
         </div>
 

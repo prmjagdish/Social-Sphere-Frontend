@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaGoogle, FaFacebookF, FaCheckCircle } from "react-icons/fa";
-import Button from "../Components/FormElements/Button";
-import InputField from "../Components/FormElements/InputField";
+import Button from "../Components/Button";
+import InputField from "../Components/InputField";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 

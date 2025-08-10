@@ -1,9 +1,10 @@
 import React from "react";
+import user from "../Data/User"
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-gray-900">
-      <main className="flex-1 px-4 md:px-8 py-6 overflow-y-auto scrollb">
+    <div className="flex flex-col md:flex-row h-screen bg-gray-900 ">
+      <main className="flex-1 px-4 md:px-8 py-6 overflow-y-auto">
         {children}
       </main>
 
@@ -17,30 +18,24 @@ const MainLayout = ({ children }) => {
           {[1, 1, 1, 1, 1, 1].map((_, i) => (
             <div key={i} className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gray-300" />
-                <p className="text-sm font-medium text-gray-300">
-                  User {i + 1}
+                <div>
+                  <img className="w-8 h-8 rounded-full" src={user.avatar} alt="" />
+                </div>
+                <div className="texhover:underlinet-sm font-small text-sm text-gray-300 flex flex-col">
+                   <p className="">
+                  {user.name}
                 </p>
+                <span className="text-xs">{user.username}</span>
+                </div>
               </div>
-              <button className="text-indigo-600 text-sm font-medium hover:underline">
+              <button className="text-indigo-600 text-sm font-medium ">
                 Follow
               </button>
             </div>
           ))}
         </div>
 
-        {/* Trending */}
-        <div className="bg-gray-900 text-gray-100 p-2 rounded-xl shadow">
-          <h3 className="text-lg  font-semibold mb-3">Trending</h3>
-          <ul className="space-y-2 text-sm px-2 text-gray-300">
-            <li>#ReactJS</li>
-            <li>#IndiaElections</li>
-            <li>#Crypto</li>
-            <li>#Crypto</li>
-            <li>#AIRevolution</li>
-            <li>#AIRevolution</li>
-          </ul>
-        </div>
+
       </aside>
     </div>
   );
