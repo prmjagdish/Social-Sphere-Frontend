@@ -5,8 +5,10 @@ import InputField from "../Components/InputField";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+
+
 const SigninPage = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -17,7 +19,7 @@ const SigninPage = () => {
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.email.trim()) newErrors.email = "Email is required";
+    if (!formData.username.trim()) newErrors.username = "Username is required";
     if (!formData.password.trim()) newErrors.password = "Password is required";
     return newErrors;
   };
@@ -31,10 +33,11 @@ const SigninPage = () => {
     }
 
     try {
+      console.log(formData);
       const response = await axios.post(
         "http://localhost:8080/auth/login",
         {
-          email: formData.email,
+          username: formData.username,
           password: formData.password,
         },
         {
@@ -50,7 +53,7 @@ const SigninPage = () => {
 
     } catch (err) {
       console.error("Login error:", err.response?.data || err.message);
-      alert(err.response?.data || "Login failed.");
+      alert(err.response ?.data?.message || "Login failed.");
     }
   };
 
@@ -73,14 +76,14 @@ const SigninPage = () => {
 
         <form onSubmit={handleSubmit} className="space-y-3">
           <InputField
-            label="Email"
-            id="email"
-            name="email"
+            label="Username"
+            id="username"
+            name="username"
             type="text"
-            value={formData.email}
+            value={formData.username}
             onChange={handleChange}
-            error={errors.email}
-            placeholder="Enter your email"
+            error={errors.username}
+            placeholder="Enter your username"
           />
 
           <InputField

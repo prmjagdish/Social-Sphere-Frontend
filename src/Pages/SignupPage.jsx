@@ -14,6 +14,8 @@ const SigninPage = () => {
     otp: "",
   });
 
+   const navigate = useNavigate();
+
   const [errors, setErrors] = useState({});
 
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -118,7 +120,7 @@ const SigninPage = () => {
       navigate("/");
     } catch (err) {
       console.error("Login error:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Login failed.");
+      alert(err.response?.data?.message || err.response?.data);
     }
   };
 
@@ -141,7 +143,7 @@ const SigninPage = () => {
 
         <form onSubmit={handleSubmit} className="space-y-3">
           <InputField
-            label="Full Name"
+            label="Username"
             id="fullName"
             name="fullName"
             type="text"

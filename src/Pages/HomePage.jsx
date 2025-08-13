@@ -5,6 +5,7 @@ import posts from "../Data/Post";
 
 const HomePage = () => {
   return (
+    
     <MainLayout>
       {/* <div className="mb-6 text-white">
         <input

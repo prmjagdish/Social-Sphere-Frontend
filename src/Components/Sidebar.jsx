@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { ProfileContext} from "../Context/ProfileContext";
 import {
   FaHome,
   FaSearch,
@@ -14,6 +14,8 @@ import { FiPlusSquare } from "react-icons/fi";
 const Sidebar = () => {
   const [active, setActive] = useState("/");
   const navigate = useNavigate();
+
+   const { profile } = useContext(ProfileContext);
 
   const menuItems = [
     { label: "Home", icon: <FaHome />, path: "/home" },
@@ -61,8 +63,8 @@ const Sidebar = () => {
         <div className="p-4 mt-auto flex items-center gap-3 border-t border-white/10">
           <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 shadow-md" />
           <div>
-            <p className="text-sm font-semibold">Jagdish Parmar</p>
-            <p className="text-xs text-white/60">@jagdish</p>
+            <p className="text-sm font-semibold">{profile?.user?.name}</p>
+            <p className="text-xs text-white/60">@{profile?.user?.username}</p>
           </div>
         </div>
       </aside>
@@ -74,7 +76,7 @@ const Sidebar = () => {
             key={i}
             onClick={() => {
               setActive(item.label);
-              navigate(item.path); // 👈 Navigate to the route
+              navigate(item.path);
             }}
             className={`flex flex-col items-center text-xs ${
               active === item.label ? "text-white" : "text-white/60"

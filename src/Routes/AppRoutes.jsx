@@ -6,22 +6,25 @@ import ProfilePage from "../Pages/ProfilePage";
 import Layout from "../Layouts/Layout";
 import Notification from "../Pages/Notification";
 import SearchPage from "../Pages/SearchPage";
-
-// import LoginPage from "../Pages/LoginPage";
-import SinginPage from "../Pages/SinginPage";
-import SingupPage from "../Pages/SingupPage";
+import SinginPage from "../Pages/SigninPage";
+import SingupPage from "../Pages/SignupPage";
 import CreatePost from "../Components/CreatePost";
+import ProtectedRoute from "../Components/ProtectedRoute";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Public Routes */}
       <Route path="/" element={<SinginPage />} />
       <Route path="/signup" element={<SingupPage />} />
-
-      {/* Private Routes wrapped in Layout */}
       <Route element={<Layout />}>
-        <Route path="/home" element={<HomePage />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/reels" element={<ReelsPage />} />
         <Route
           path="/create"
@@ -32,10 +35,9 @@ const AppRoutes = () => {
             />
           }
         />
-      <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/notifications" element={<Notification />} />
-        {/* Add more as needed */}
       </Route>
     </Routes>
   );

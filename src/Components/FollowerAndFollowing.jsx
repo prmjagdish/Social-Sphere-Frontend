@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import user from "../Data/User";
 
-const FollowerAndFollowing = () => {
+const FollowerAndFollowing = ({followers,following}) => {
   const [showModal, setShowModal] = useState(null);
 
   return (
@@ -13,7 +13,7 @@ const FollowerAndFollowing = () => {
           className="hover:text-teal-400 transition"
         >
           <div className="flex gap-2">
-            <span>{user.followers}</span>
+            <span>{followers}</span>
             <span>Followers</span>
           </div>
         </button>
@@ -22,7 +22,7 @@ const FollowerAndFollowing = () => {
           className="hover:text-teal-400 transition"
         >
           <div className="flex gap-2">
-            <span>{user.following}</span> 
+            <span>{following}</span> 
             <span>Followings</span>
           </div>
         </button>
