@@ -10,13 +10,13 @@ const PostCard = ({ post }) => {
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-700">
         <div className="flex items-center gap-3">
           <img
-            src={post.avatar}
+            src={post.avatarUrl}
             alt="avatar"
             className="w-10 h-10 rounded-full object-cover"
           />
           <div>
             <p className="font-semibold text-gray-200">{post.username}</p>
-            <p className="text-xs text-gray-400">{post.time}</p>
+            {/* <p className="text-xs text-gray-400">{post.username}</p> */}
           </div>
         </div>
         <button className="text-gray-500 hover:text-gray-300 text-xl">⋯</button>
@@ -25,11 +25,11 @@ const PostCard = ({ post }) => {
       {/* Content */}
       <div className="p-4">
         <img
-          src={post.image}
+          src={post.imageUrl}
           alt="post"
           className="w-full h-64 object-cover rounded-lg mb-3"
         />
-        <p className="text-gray-300">{post.content}</p>
+        <p className="text-gray-300">{post.caption}</p>
       </div>
 
       {/* Actions */}

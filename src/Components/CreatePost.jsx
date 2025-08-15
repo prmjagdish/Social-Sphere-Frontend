@@ -1,39 +1,71 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ProfileContext } from "../Context/ProfileContext";
+import axios from "axios";
 
-const CreatePost = ({ onAddPost, onAddReel }) => {
-  
+// { onAddPost, onAddReel }
+const CreatePost = () => {
   const [activeTab, setActiveTab] = useState("post");
   const [mediaFile, setMediaFile] = useState(null);
+  const [previewURL, setPreviewURL] = useState(null);
   const [caption, setCaption] = useState("");
   const navigate = useNavigate();
+  const {profile} = useContext(ProfileContext);
 
   const handleMediaChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setMediaFile(URL.createObjectURL(file)); // local preview
+      setMediaFile(file); // keep file for upload
+      setPreviewURL(URL.createObjectURL(file)); // local preview
+      console.log(profile.user?.username);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    console.log(profile.user?.username);
+
     e.preventDefault();
     if (!mediaFile) return alert("Please select a file");
 
-    const newItem = {
-      id: Date.now(),
-      url: mediaFile,
-      caption,
-    };
+    try {
+      const formData = new FormData();
+      formData.append("media", mediaFile);
+      formData.append("caption", caption);
 
-    if (activeTab === "post") {
-      onAddPost(newItem);
-    } else {
-      onAddReel(newItem);
+      console.log(formData);
+
+      // Example API endpoint
+      const endpoint =
+        activeTab === "post"
+          ? `http://localhost:8080/api/posts/${profile.user.username}`
+          : `http://localhost:8080/api/reels/${profile.user.username}`;
+
+      const token = localStorage.getItem("token"); // if auth needed
+
+      const res = await axios.post(endpoint, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`, // optional if auth
+        },
+      });
+
+      // Optional: update parent state
+      // if (activeTab === "post") {
+      //   onAddPost(res.data);
+      // } else {
+      //   onAddReel(res.data);
+      // }
+
+      // Reset form
+      setMediaFile(null);
+      setPreviewURL(null);
+      setCaption("");
+      navigate("/profile");
+  
+    } catch (err) {
+      console.error("Upload error:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Failed to upload");
     }
-
-    setMediaFile(null);
-    setCaption("");
-    navigate("/profile"); // go back to profile
   };
 
   return (
@@ -64,10 +96,7 @@ const CreatePost = ({ onAddPost, onAddReel }) => {
           </button>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="bg-gray-800 p-4 rounded-lg shadow-lg"
-        >
+        <form  onSubmit={handleSubmit} className="bg-gray-800 p-4 rounded-lg shadow-lg">
           <h2 className="text-xl text-sky-300 font-semibold mb-4">
             {activeTab === "post" ? "Create a New Post" : "Upload a Reel"}
           </h2>
@@ -82,17 +111,21 @@ const CreatePost = ({ onAddPost, onAddReel }) => {
           {mediaFile && (
             <div className="mb-4">
               {activeTab === "post" ? (
-                <img
-                  src={mediaFile}
-                  alt="Preview"
-                  className="w-full max-h-64 object-cover rounded"
-                />
+                <div className="flex justify-center mt-2">
+                  <img
+                    src={previewURL}
+                    alt="Preview"
+                    className="w-100 max-h-64 object-cover rounded"
+                  />
+                </div>
               ) : (
-                <video
-                  src={mediaFile}
-                  controls
-                  className="w-full max-h-64 rounded"
-                />
+                <div className="flex justify-center mt-2">
+                  <video
+                    src={previewURL}
+                    controls
+                    className="w-full max-h-64 rounded"
+                  />
+                </div>
               )}
             </div>
           )}

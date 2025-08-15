@@ -12,7 +12,6 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "tailwind": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
-
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.1.11",
@@ -20,6 +19,7 @@
     "axios": "^1.11.0",
     "formik": "^2.4.6",
     "gh-pages": "^6.3.0",
+    "lucide-react": "^0.539.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icon": "^1.0.0",

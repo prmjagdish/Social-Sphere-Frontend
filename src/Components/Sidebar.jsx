@@ -61,7 +61,8 @@ const Sidebar = () => {
 
         {/* User Profile */}
         <div className="p-4 mt-auto flex items-center gap-3 border-t border-white/10">
-          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 shadow-md" />
+          <div/>
+          <img src={profile?.user?.avatar} alt="" className="h-10 w-10 rounded-full"/>
           <div>
             <p className="text-sm font-semibold">{profile?.user?.name}</p>
             <p className="text-xs text-white/60">@{profile?.user?.username}</p>

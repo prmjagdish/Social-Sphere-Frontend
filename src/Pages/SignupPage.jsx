@@ -34,7 +34,7 @@ const SigninPage = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:8080/auth/send-otp", {
+      const res = await axios.post("https://social-sphere-backend-cnxx.onrender.com/auth/send-otp", {
         email: formData.email,
       });
 
@@ -57,7 +57,7 @@ const SigninPage = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:8080/auth/verify-otp", {
+      const res = await axios.post("https://social-sphere-backend-cnxx.onrender.com/auth/verify-otp", {
         email: formData.email,
         otp: formData.otp,
       });
@@ -102,7 +102,7 @@ const SigninPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/auth/signup",
+        "https://social-sphere-backend-cnxx.onrender.com/auth/signup",
         {
           username: formData.fullName,
           email: formData.email,

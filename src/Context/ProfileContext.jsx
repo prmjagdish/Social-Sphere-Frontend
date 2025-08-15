@@ -10,9 +10,9 @@ export const ProfileProvider = ({ children }) => {
  useEffect(() => {
     const token = localStorage.getItem("token");
     console.log(token);
-
+    
     axios
-      .get("http://localhost:8080/api/profile/me", {
+      .get("https://social-sphere-backend-cnxx.onrender.com/api/profile/me", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

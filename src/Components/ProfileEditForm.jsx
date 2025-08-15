@@ -29,7 +29,7 @@ const ProfileEditForm = ({ username, setShowEditModal, setProfile }) => {
         formData.append("image", file);
 
         const uploadRes = await axios.post(
-          "http://localhost:8080/api/images/upload",
+          "https://social-sphere-backend-cnxx.onrender.com/api/images/upload",
           formData,
           {
             headers: {
@@ -47,7 +47,7 @@ const ProfileEditForm = ({ username, setShowEditModal, setProfile }) => {
 
   
       const response = await axios.put(
-        `http://localhost:8080/api/profile/${username}/edit`,
+        `https://social-sphere-backend-cnxx.onrender.com/api/profile/${username}/edit`,
         payload,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
