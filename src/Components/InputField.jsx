@@ -2,10 +2,10 @@ import React from "react";
 
 function InputField({ label, id, name, type, value, onChange, error, placeholder }) {
   return (
-    <div>
+    <div className="flex flex-col gap-1">
       <label
-        htmlFor="email"
-        className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-0.5"
+        htmlFor={id}
+        className="block text-xs font-medium text-gray-900"
       >
         {label}
       </label>
@@ -16,15 +16,13 @@ function InputField({ label, id, name, type, value, onChange, error, placeholder
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`w-full px-3 py-2 rounded-md text-sm border text-gray-400 outline-none bg-transparent ${
-          error
-            ? "border-red-500"
-            : "border-gray-300 dark:border-gray-800 focus:border-blue-600 focus:ring-1 focus:ring-green-300"
-        } placeholder-gray-400`}
+        className={`w-full px-3 py-2 text-sm rounded-md border outline-none placeholder-gray-400 bg-white
+          ${error
+            ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-300"
+            : "border-gray-300 focus:border-blue-600 focus:ring-1 focus:ring-blue-300"
+          }`}
       />
-      {error && (
-        <p className="text-xs text-red-500 mt-1">{error}</p>
-      )}
+      {error && <p className="text-xs text-red-500">{error}</p>}
     </div>
   );
 }

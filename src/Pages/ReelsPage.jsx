@@ -11,7 +11,6 @@ import {
 
 import dummyReels from "../Data/Reel";
 
-
 const ReelsPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentReel = dummyReels[currentIndex];
@@ -46,27 +45,25 @@ const ReelsPage = () => {
 
   return (
     <div
-    
-      className="h-[90vh]  md:h-screen w-full bg-gray-900 relative overflow-hidden flex items-center justify-center touch-none"
+      {...handlers}
+      className="h-[90vh] md:h-screen w-full relative overflow-hidden flex items-center justify-center touch-none bg-gray-50"
     >
       <div className="h-[95vh] w-full max-w-[420px] mx-auto relative">
 
         <video
           key={currentReel.id}
           src={currentReel.videoUrl}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover rounded-lg shadow-md"
           autoPlay
           loop
           muted
         />
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 text-white bg-gradient-to-t from-black via-black/50 to-transparent">
+        <div className="absolute bottom-0 left-0 right-0 p-4 text-gray-900 bg-gradient-to-t from-white via-white/50 to-transparent rounded-b-lg">
           <h3 className="text-lg font-semibold">{currentReel.username}</h3>
           <p className="text-sm mb-4">{currentReel.caption}</p>
 
-          
-          <div className="absolute right-4 bottom-24 flex flex-col items-center gap-5 text-2xl">
-            
+          <div className="absolute right-4 bottom-24 flex flex-col items-center gap-5 text-2xl text-gray-900">
             <button
               onClick={() => toggleLike(currentReel.id)}
               className="hover:scale-110 transition"
@@ -78,7 +75,6 @@ const ReelsPage = () => {
               )}
             </button>
 
-            
             <button
               onClick={() => setShowComments(true)}
               className="hover:scale-110 transition"
@@ -86,7 +82,6 @@ const ReelsPage = () => {
               <FaRegComment />
             </button>
 
-            
             <button
               onClick={handleShare}
               className="hover:scale-110 transition"
@@ -94,7 +89,6 @@ const ReelsPage = () => {
               <FaShare />
             </button>
 
-            
             <button
               onClick={() => toggleSave(currentReel.id)}
               className="hover:scale-110 transition"

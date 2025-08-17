@@ -1,78 +1,80 @@
-import React, { useEffect, useState , useContext} from "react";
-import { FaEdit } from "react-icons/fa";
-import ProfileEditForm from "./ProfileEditForm";
+import React, { useContext, useState } from "react";
+import { ProfileContext } from "../Context/ProfileContext";
 import FollowerAndFollowing from "./FollowerAndFollowing";
-import { ProfileContext} from "../Context/ProfileContext";
-import axios from "axios";
+import ProfileEditForm from "./ProfileEditForm";
+import { FaShareAlt } from "react-icons/fa";
 
 const ProfileHeader = () => {
+  const { profile, setProfile } = useContext(ProfileContext);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [profile, setProfile] = useState(null);
-  // const { profile, setProfile} = useContext(ProfileContext);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    console.log(token);
-
-    axios
-      .get("https://social-sphere-backend-cnxx.onrender.com/api/profile/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        console.log("Profile API response:", res.data);
-        setProfile(res.data);
-      })
-      .catch((err) => console.error("Error fetching profile:", err));
-  }, []);
-
-  if (!profile)
-    return <p className="text-center text-gray-500 mt-10">Loading...</p>;
+  if (!profile) {
+    return <div className="text-center p-4 text-gray-500">Loading...</div>;
+  }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="flex flex sm:items-center sm:flex-col sm:w-full gap-4 sm:gap-6 mb-2">
-       <div className="flex justify-between  w-full">
-         <img
-          src={profile.user.avatar}
-          alt="avatar"
-          className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-teal-500 shadow-lg mx-auto sm:mx-0"
-        />
-        <div className="flex flex-col w-full justify-between px-4 items-start">
-          <div className=" flex-1 mb-1 w-full">
-            <h2 className="text-xl sm:text-2xl font-bold text-sky-300">
-              @{profile.user.username}
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-400 mt-2">
-              {profile.user.name}
-            </p>
-            <p className=" text-sm sm:text-base text-gray-300">
-              {profile.user.bio}
-            </p>
-          </div>
-          <FollowerAndFollowing
-            followers={profile.followers.length}
-            following={profile.following.length}
+    <div className="flex flex-col gap-4 p-4 sm:p-6 bg-white rounded-xl shadow w-full">
+      
+      {/* Row 1: Avatar + Username/Name/Bio */}
+      <div className="flex gap-6 items-start">
+        {/* Avatar */}
+        <div className="flex-shrink-0">
+          <img
+            src={profile.user.avatar}
+            alt={profile.user.name}
+            className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border border-gray-300"
           />
         </div>
+
+        {/* Username, Name, Bio */}
+        <div className="flex flex-col gap-1">
+          <p className="font-bold text-lg sm:text-xl">@{profile.user.username}</p>
+          {profile.user.name && (
+            <p className=" text-lg sm:text-xl">{profile.user.name}</p>
+          )}
+          {profile.user.bio && (
+            <p className="text-sm sm:text-base text-gray-700 max-w-xl">
+              {profile.user.bio}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Row 2: Stats (Start from main div beginning, not avatar) */}
+      <div className="flex gap-6 text-sm text-gray-700 ">
+        <span>
+          <span className="font-semibold">{profile.posts?.length || 0}</span> posts
+        </span>
+        <FollowerAndFollowing
+          followers={profile.followers?.length || 0}
+          following={profile.following?.length || 0}
+        />
+      </div>
+
+      {/* Row 3: Buttons (Start from main div beginning) */}
+      <div className="flex gap-3">
         <button
           onClick={() => setShowEditModal(true)}
-          className=" sm:ml-auto px-3  hover:from-sky-500 hover:to-sky-600 rounded-md text-xs sm:text-sm font-medium flex items-center   self-center sm:self-auto"
+          className="px-4 py-1 border border-gray-300 rounded-lg hover:bg-gray-100 transition text-sm sm:text-base"
         >
-          <FaEdit className="text-sm sm:text-base" />
-          <span className="px-2">Edit </span>
+          Edit Profile
         </button>
-       </div>
-
-        
-
-        {showEditModal && (
-          <ProfileEditForm
-            username={profile.user.username}
-            setShowEditModal={setShowEditModal}
-            setProfile={setProfile}
-          />
-        )}
+        <button
+          onClick={() => alert("Share Profile clicked")}
+          className="px-4 py-1 border border-gray-300 rounded-lg hover:bg-gray-100 transition flex items-center gap-2 text-sm sm:text-base"
+        >
+          <FaShareAlt /> Share Profile
+        </button>
       </div>
+
+      {/* Edit Profile Modal */}
+      {showEditModal && (
+        <ProfileEditForm
+          username={profile.user.username}
+          setShowEditModal={setShowEditModal}
+          setProfile={setProfile}
+        />
+      )}
     </div>
   );
 };

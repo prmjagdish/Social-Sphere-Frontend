@@ -2,8 +2,8 @@ import React from "react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
-import "../dist/output.css";
-import { ProfileProvider } from "./Context/ProfileContext";
+import './index.css';
+import ProfileProvider  from "./Context/ProfileProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

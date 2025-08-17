@@ -1,41 +1,66 @@
 import React from "react";
-import user from "../Data/User"
+import user from "../Data/User";
+import { useState } from "react";
 
 const MainLayout = ({ children }) => {
+  const [visibleCount, setVisibleCount] = useState(5);
+
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-gray-900 ">
-      <main className="flex-1 px-4 md:px-8 py-6 overflow-y-auto">
+    <div className="flex flex-col md:flex-row h-screen bg-gray-50">
+      {/* Postsfeed */}
+      <main className="flex-1 h-screen md:px-8 py-6 overflow-y-auto scrollbar-hide bg-white shadow-sm  mx-auto">
         {children}
       </main>
 
       {/* Right Sidebar */}
-      <aside className="hidden lg:block w-1/4 px-4 py-4 h-screen space-y-4 ">
-        {/* Suggested Users */}
-        <div className="bg-gray-900 p-4 rounded-xl shadow overflow-y-auto">
-          <h3 className="text-lg text-gray-100 font-semibold mb-2">
+      <aside className="hidden lg:block w-1/3">
+        <div className="bg-white h-screen p-5  shadow-sm overflow-y-auto scrollbar-hide">
+          {/* Title */}
+          <h3 className="text-lg font-semibold text-gray-800 mb-5">
             Suggested for you
           </h3>
-          {[1, 1, 1, 1, 1, 1].map((_, i) => (
-            <div key={i} className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-3">
-                <div>
-                  <img className="w-8 h-8 rounded-full" src={user.avatar} alt="" />
+
+          {/* Suggested Users */}
+          <div className="space-y-2">
+            {user.suggestedUsers.slice(0, visibleCount).map((u) => (
+              <div
+                key={u.id}
+                className="flex items-center justify-between hover:bg-gray-50 p-2 rounded-lg transition"
+              >
+                {/* User Info */}
+                <div className="flex items-center gap-2">
+                  <img
+                    className="w-10 h-10 rounded-full border border-gray-200"
+                    src={u.avatar}
+                    alt={u.name}
+                  />
+                  <div className="flex flex-col">
+                    <p className="text-sm font-medium text-gray-800">
+                      {u.name}
+                    </p>
+                    <span className="text-xs text-gray-400">{u.username}</span>
+                  </div>
                 </div>
-                <div className="texhover:underlinet-sm font-small text-sm text-gray-300 flex flex-col">
-                   <p className="">
-                  {user.name}
-                </p>
-                <span className="text-xs">{user.username}</span>
-                </div>
+
+                {/* Follow Button */}
+                <button className="px-4 py-1.5  text-sm font-semibold rounded-md text-gray-900 border border-gray-300 hover:bg-gray-200 transition-colors">
+                  Follow
+                </button>
               </div>
-              <button className="text-indigo-600 text-sm font-medium ">
-                Follow
-              </button>
-            </div>
-          ))}
+            ))}
+
+            {visibleCount < user.suggestedUsers.length && (
+              <div className="mt-4 text-center">
+                <button
+                  onClick={() => setVisibleCount(visibleCount + 5)}
+                  className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                >
+                  Show more
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-
-
       </aside>
     </div>
   );

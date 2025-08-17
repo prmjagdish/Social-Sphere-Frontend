@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { FaGoogle, FaFacebookF, FaCheckCircle } from "react-icons/fa";
 import Button from "../Components/Button";
 import InputField from "../Components/InputField";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ENDPOINTS } from "../api/config";
 
-const SigninPage = () => {
+const SignupPage = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -13,14 +13,8 @@ const SigninPage = () => {
     confirmPassword: "",
     otp: "",
   });
-
-   const navigate = useNavigate();
-
   const [errors, setErrors] = useState({});
-
-  const [isOtpSent, setIsOtpSent] = useState(false);
-
-  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,18 +28,10 @@ const SigninPage = () => {
     }
 
     try {
-      const res = await axios.post("https://social-sphere-backend-cnxx.onrender.com/auth/send-otp", {
-        email: formData.email,
-      });
-
+      const res = await axios.post(ENDPOINTS.SEND_OTP, { email: formData.email });
       alert(res.data);
-      // alert("OTP sent successfully!");
-      setIsOtpSent(true);
     } catch (error) {
-      console.error(
-        "Error sending OTP:",
-        error.response?.data || error.message
-      );
+      console.error("Error sending OTP:", error.response?.data || error.message);
       alert("Failed to send OTP. Try again.");
     }
   };
@@ -57,23 +43,10 @@ const SigninPage = () => {
     }
 
     try {
-      const res = await axios.post("https://social-sphere-backend-cnxx.onrender.com/auth/verify-otp", {
-        email: formData.email,
-        otp: formData.otp,
-      });
-
-      if (res.data.verified) {
-        // alert("OTP Verified Successfully!");
-        setIsOtpVerified(true);
-      } else {
-        alert("Invalid OTP!");
-        setIsOtpVerified(false);
-      }
+      const res = await axios.post(ENDPOINTS.VERIFY_OTP, { email: formData.email, otp: formData.otp });
+      console.log(res);
     } catch (error) {
-      console.error(
-        "Error verifying OTP:",
-        error.response?.data || error.message
-      );
+      console.error("Error verifying OTP:", error.response?.data || error.message);
       alert("OTP verification failed.");
     }
   };
@@ -83,8 +56,7 @@ const SigninPage = () => {
     if (!formData.fullName.trim()) newErrors.fullName = "Full name is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
     if (!formData.password.trim()) newErrors.password = "Password is required";
-    if (!formData.confirmPassword.trim())
-      newErrors.confirmPassword = "Confirm your password";
+    if (!formData.confirmPassword.trim()) newErrors.confirmPassword = "Confirm your password";
     if (!formData.otp.trim()) newErrors.otp = "OTP not verify";
     else if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = "Passwords do not match";
@@ -101,47 +73,29 @@ const SigninPage = () => {
     }
 
     try {
-      const response = await axios.post(
-        "https://social-sphere-backend-cnxx.onrender.com/auth/signup",
-        {
-          username: formData.fullName,
-          email: formData.email,
-          password: formData.password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+      await axios.post(
+        ENDPOINTS.SIGNUP,
+        { username: formData.fullName, email: formData.email, password: formData.password },
+        { headers: { "Content-Type": "application/json" } }
       );
-
-      const data = response.data;
-      console.log(data);
       navigate("/");
     } catch (err) {
-      console.error("Login error:", err.response?.data || err.message);
+      console.error("Signup error:", err.response?.data || err.message);
       alert(err.response?.data?.message || err.response?.data);
     }
   };
 
   return (
-    <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-black to-gray-900 font-sans overflow-auto px-2">
-      <div
-        className="w-full max-w-xs sm:max-w-sm md:max-w-md 
-        bg-white dark:bg-gray-950 rounded-2xl shadow-lg 
-        shadow-blue-200/30 dark:shadow-gray-900/60 
-        px-4 py-5 sm:px-5 sm:py-6 space-y-3"
-      >
-        <div className="text-center space-y-0.5 mb-2">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">
-            Sign Up
-          </h2>
-          <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
-            SocialSphere
-          </p>
+    <div className="min-h-screen w-screen flex items-center justify-center bg-gray-100 font-sans px-2 text-gray-900">
+      <div className="w-full max-w-xs sm:max-w-sm md:max-w-md bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-3">
+        {/* Header */}
+        <div className="text-center mb-2">
+          <h2 className="text-xl sm:text-2xl font-bold">Social Sphere</h2>
+          <p className="text-sm text-gray-700">Sign Up</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3">
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <InputField
             label="Username"
             id="fullName"
@@ -164,10 +118,14 @@ const SigninPage = () => {
             placeholder="Enter email"
           />
 
-          <div className="flex justify-end text-xs" onClick={sendOtpHandler}>
-            <a href="#" className="text-blue-600 hover:underline">
+          <div className="flex justify-end text-xs">
+            <button
+              type="button"
+              onClick={sendOtpHandler}
+              className="text-blue-600 hover:underline"
+            >
               Send OTP
-            </a>
+            </button>
           </div>
 
           <InputField
@@ -181,12 +139,6 @@ const SigninPage = () => {
             placeholder="Enter OTP received in email"
           />
 
-          {/* <div className="flex justify-end text-xs" onClick={otpVerifyHandler}>
-            <a href="#" className="text-blue-600 hover:underline">
-              Verify OTP
-            </a>
-          </div> */}
-
           <InputField
             label="Password"
             id="password"
@@ -195,7 +147,7 @@ const SigninPage = () => {
             value={formData.password}
             onChange={handleChange}
             error={errors.password}
-            placeholder={"New password"}
+            placeholder="New password"
           />
 
           <InputField
@@ -212,23 +164,9 @@ const SigninPage = () => {
           <Button ButtonName="Sign Up" />
         </form>
 
-        {/* <div className="flex items-center text-xs text-gray-400 dark:text-gray-600 gap-2 mt-3">
-          <hr className="flex-grow border-t border-gray-300 dark:border-gray-700" />
-          <span>OR</span>
-          <hr className="flex-grow border-t border-gray-300 dark:border-gray-700" />
-        </div>
-
-        <div className="flex gap-2 mb-1 mt-2">
-          <button className="flex-1 flex items-center justify-center gap-2 py-1.5 border border-gray-300 dark:border-gray-800 rounded-md text-xs text-red-600 hover:bg-red-50 dark:hover:bg-gray-800">
-            <FaGoogle className="text-sm" /> Google
-          </button>
-          <button className="flex-1 flex items-center justify-center gap-2 py-1.5 border border-gray-300 dark:border-gray-800 rounded-md text-xs text-blue-700 hover:bg-blue-50 dark:hover:bg-gray-800">
-            <FaFacebookF className="text-sm" /> Facebook
-          </button>
-        </div> */}
-
-        <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-2">
-          Already have an account ?{" "}
+        {/* Sign In Link */}
+        <p className="text-center text-gray-700 text-xs mt-2">
+          Already have an account?{" "}
           <Link to="/" className="text-blue-600 hover:underline">
             Sign In
           </Link>
@@ -238,4 +176,4 @@ const SigninPage = () => {
   );
 };
 
-export default SigninPage;
+export default SignupPage;

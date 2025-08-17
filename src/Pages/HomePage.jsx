@@ -1,39 +1,60 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import MainLayout from "../Layouts/MainLayout";
 import PostCard from "../Components/PostCard";
-import axios from "axios";
+import { fetchFeedPosts } from "../api/posts";
+import { useLocation } from "react-router-dom";
 
 const HomePage = () => {
-  const [postList, setPostList] = useState([]); // store posts
-  const [page, setPage] = useState(0); // current page
-  const [size] = useState(10); // page size
+  const [postList, setPostList] = useState([]);
+  const [page, setPage] = useState(0);
+  const [size] = useState(10);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-
   const loader = useRef(null);
-  const fetchedPages = useRef(new Set()); // track fetched pages
+  const fetchedPages = useRef(new Set());
+  const location = useLocation();
+  const [scrollTarget, setScrollTarget] = useState(null);
 
-  // fetch posts from backend
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const scrollToId = params.get("scrollTo");
+    if (scrollToId) {
+      setScrollTarget(scrollToId);
+    }
+  }, [location]);
+
+  useEffect(() => {
+    if (!scrollTarget) return;
+
+    const interval = setInterval(() => {
+      const element = document.getElementById(`post-${scrollTarget}`);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        clearInterval(interval);
+        setScrollTarget(null);
+      }
+    }, 300);
+
+    return () => clearInterval(interval);
+  }, [scrollTarget]);
+
   const fetchFeed = useCallback(async () => {
-    if (loading || !hasMore || fetchedPages.current.has(page)) return;
+    if (loading || !hasMore || fetchedPages.current.has(page)) {
+      setLoading(true);
+      return;
+    }
 
-    setLoading(true);
     try {
-      const token = localStorage.getItem("token"); // JWT token
-      const { data } = await axios.get(
-        `https://social-sphere-backend-cnxx.onrender.com/api/posts/feed?page=${page}&size=${size}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const data = await fetchFeedPosts(page, size);
 
       if (Array.isArray(data) && data.length > 0) {
-        // deduplicate by id
-        setPostList(prev => {
-          const newPosts = data.filter(d => !prev.some(p => p.id === d.id));
+        setPostList((prev) => {
+          const newPosts = data.filter((d) => !prev.some((p) => p.id === d.id));
           return [...prev, ...newPosts];
         });
-        fetchedPages.current.add(page); // mark page as fetched
+        fetchedPages.current.add(page);
       } else {
-        setHasMore(false); // no more posts
+        setHasMore(false);
       }
     } catch (err) {
       console.error("Error fetching posts:", err);
@@ -42,17 +63,15 @@ const HomePage = () => {
     }
   }, [page, size, loading, hasMore]);
 
-  // fetch posts when page changes
   useEffect(() => {
     fetchFeed();
   }, [page, fetchFeed]);
 
-  // infinite scroll observer
   useEffect(() => {
     const observer = new IntersectionObserver(
-      entries => {
+      (entries) => {
         if (entries[0].isIntersecting && hasMore && !loading) {
-          setPage(prev => prev + 1);
+          setPage((prev) => prev + 1);
         }
       },
       { threshold: 1 }
@@ -62,27 +81,27 @@ const HomePage = () => {
     if (currentLoader) observer.observe(currentLoader);
 
     return () => {
-      if (currentLoader) observer.unobserve(currentLoader);
+      if (currentLoader) {
+        observer.unobserve(currentLoader);
+      }
     };
   }, [hasMore, loading]);
 
-  // debug: log updated post list
-  useEffect(() => {
-    console.log("Updated postList:", postList);
-  }, [postList]);
-
   return (
     <MainLayout>
-      <div className="flex flex-col gap-6">
-        {postList.map(post => (
-          <PostCard key={post.id} post={post} />
-        ))}
+      <div className="flex justify-center">
+        <div className="flex flex-col w-80 md:w-[340px] lg:w-[440px] gap-4 ">
+          {postList.map((post) => (
+            <div key={post.id} id={`post-${post.id}`}>
+              <PostCard post={post} />
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* loader div for infinite scroll */}
       {hasMore && (
         <div ref={loader} className="text-center p-4 text-gray-500">
-          {loading ? "Loading..." : "Scroll to load more"}
+          {loading ? "Scroll to load more" : "Loading..."}
         </div>
       )}
     </MainLayout>

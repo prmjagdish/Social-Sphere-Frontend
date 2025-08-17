@@ -1,58 +1,73 @@
 import React, { useState } from "react";
-
-const dummyUsers = [
-  { id: 1, name: "Amit Patel", username: "amit123", avatar: "https://i.pravatar.cc/150?img=3" },
-  { id: 2, name: "Neha Sharma", username: "neha_sharma", avatar: "https://i.pravatar.cc/150?img=5" },
-  { id: 3, name: "Ravi Kumar", username: "ravi_k", avatar: "https://i.pravatar.cc/150?img=8" },
-];
+import user from "../Data/User";
 
 const SearchPage = () => {
-  const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredUsers = dummyUsers.filter(
-    (user) =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.username.toLowerCase().includes(searchTerm.toLowerCase())
+  const [searchTerm, setSearchTerm] = useState("");
+  const [visibleCount, setVisibleCount] = useState(5); 
+
+  const filteredUsers = user.suggestedUsers.filter(
+    (u) =>
+      u.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      u.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-4 sm:p-6">
-      <div className="max-w-xl mx-auto">
-        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-sky-400">Search</h2>
-
+    <div className="min-h-screen p-4 flex justify-center">
+      <div className="w-full max-w-md">
+        {/* Search Input */}
         <input
           type="text"
-          placeholder="Search users..."
+          placeholder="Search by name or username"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 rounded-md border border-gray-700 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 mb-6"
+          className="w-full px-4 py-2 mb-6 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
-        <div className="space-y-4">
-          {filteredUsers.length > 0 ? (
-            filteredUsers.map((user) => (
-              <div
-                key={user.id}
-                className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 bg-gray-800 border border-gray-700 rounded-lg p-3 shadow hover:bg-gray-700 transition"
-              >
-                <img
-                  src={user.avatar}
-                  alt={user.name}
-                  className="w-14 h-14 sm:w-12 sm:h-12 rounded-full object-cover mx-auto sm:mx-0"
-                />
-                <div className="text-center sm:text-left flex-1">
-                  <p className="text-base font-semibold">{user.name}</p>
-                  <p className="text-sm text-gray-400">@{user.username}</p>
+        {/* Search Results */}
+        {filteredUsers.length > 0 ? (
+          <>
+            <div className="space-y-3">
+              {filteredUsers.slice(0, visibleCount).map((u) => (
+                <div
+                  key={u.id}
+                  className="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition"
+                >
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={u.avatar}
+                      alt={u.name}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                    <div>
+                      <p className="font-semibold text-sm">{u.name}</p>
+                      <p className="text-gray-500 text-sm">{u.username}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <button className="px-4 py-1.5 text-sm font-semibold rounded-md text-gray-900 border border-gray-300 hover:bg-gray-200 transition-colors">
+                      Follow
+                    </button>
+                  </div>
                 </div>
-                <button className="text-sky-400 hover:underline text-sm sm:text-base text-center sm:text-right">
-                  View
+              ))}
+            </div>
+
+            {/* Show More Button */}
+            {visibleCount < filteredUsers.length && (
+              <div className="mt-4 text-center">
+                <button
+                  onClick={() => setVisibleCount(visibleCount + 5)}
+                  className="px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition"
+                >
+                  Show more
                 </button>
               </div>
-            ))
-          ) : (
-            <p className="text-gray-400 text-sm">No users found.</p>
-          )}
-        </div>
+            )}
+          </>
+        ) : (
+          <p className="text-gray-500 text-center">No users found.</p>
+        )}
       </div>
     </div>
   );

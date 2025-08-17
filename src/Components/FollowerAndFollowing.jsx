@@ -1,74 +1,47 @@
 import React, { useState } from "react";
 import user from "../Data/User";
 
-const FollowerAndFollowing = ({followers,following}) => {
+const FollowerAndFollowing = ({ followers, following }) => {
   const [showModal, setShowModal] = useState(null);
 
+  const dummyList = Array(6).fill(user); // Dummy users for modal
+
   return (
-    <div className="flex gap-6 text-sm  text-gray-300">
-      {/* <div className="flex gap-2"> <span>{user.posts}</span> <span>Posts</span></div> */}
-      <div className="flex gap-6">
-        <button
-          onClick={() => setShowModal("followers")}
-          className="hover:text-teal-400 transition"
-        >
-          <div className="flex gap-2">
-            <span>{followers}</span>
-            <span>Followers</span>
-          </div>
-        </button>
-        <button
-          onClick={() => setShowModal("following")}
-          className="hover:text-teal-400 transition"
-        >
-          <div className="flex gap-2">
-            <span>{following}</span> 
-            <span>Followings</span>
-          </div>
-        </button>
-      </div>
+    <div className="flex gap-6 text-sm text-gray-700">
+      <button onClick={() => setShowModal("followers")} className="hover:text-gray-900 transition">
+        <div className="flex gap-2">
+          <span className="font-semibold">{followers}</span>
+          <span> Followers</span>
+        </div>
+      </button>
+      <button onClick={() => setShowModal("following")} className="hover:text-gray-900 transition">
+        <div className="flex gap-2">
+          <span className="font-semibold">{following}</span>
+          <span>Following</span>
+        </div>
+      </button>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
-          <div className="bg-gray-900 text-white rounded-xl p-6 w-[90%] max-w-md shadow-xl">
-            <h3 className="text-lg font-semibold mb-4 capitalize text-sky-300">
-              {showModal}
-            </h3>
-            <div className="">
-              <ul className="space-y-2 text-sm max-h-60 snap-y ">
-                {[1, 2, 1, 1, 1, 1].map((name, i) => (
-                  <li
-                    key={i}
-                    className="flex justify-between items-center px-2 bg-gray-800 rounded"
-                  >
-                    <div
-                      key={i}
-                      className="flex items-center justify-between mb-3"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div>
-                          <img
-                            className="w-8 h-8 rounded-full"
-                            src={user.avatar}
-                            alt=""
-                          />
-                        </div>
-                        <div className="texhover:underlinet-sm font-small text-sm text-gray-300 flex flex-col">
-                          <p className="">{user.name}</p>
-                          <span className="text-xs">{user.username}</span>
-                        </div>
-                      </div>
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
+          <div className="bg-white w-full max-w-md p-4 rounded-xl shadow-lg">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 capitalize">{showModal}</h3>
+            <ul className="space-y-3 max-h-60 overflow-y-auto">
+              {dummyList.map((u, i) => (
+                <li key={i} className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <img src={u.avatar} alt={u.name} className="w-10 h-10 rounded-full object-cover" />
+                    <div className="flex flex-col text-gray-800">
+                      <p className="font-semibold">{u.name}</p>
+                      <span className="text-sm text-gray-500">@{user.username}</span>
                     </div>
-                    <button className="text-indigo-600 text-sm font-medium ">
-                      View
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                  </div>
+                  <button className="text-blue-500 font-medium">Follow</button>
+                </li>
+              ))}
+            </ul>
             <button
               onClick={() => setShowModal(null)}
-              className="mt-4 text-sm text-gray-400 hover:text-white "
+              className="mt-4 w-full py-2 text-gray-600 hover:text-gray-900 border border-gray-300 rounded"
             >
               Close
             </button>
