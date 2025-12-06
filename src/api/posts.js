@@ -1,4 +1,4 @@
-import api from "./apiService";
+import api from "./apiClient";
 
 export const uploadPostOrReel = (username, mediaFile, caption, type = "post") => {
   const formData = new FormData();

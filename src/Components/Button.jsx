@@ -1,14 +1,28 @@
-import React from "react";
-
-function Button({ButtonName}) {
+const Button = ({
+  children,
+  type = "button",
+  onClick,
+  disabled = false,
+  className = "",
+}) => {
   return (
     <button
-      type="submit"
-      className="w-full py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-md"
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={`
+        w-full py-1.5 rounded-md font-semibold text-white transition
+        ${
+          disabled
+            ? "bg-blue-300 cursor-not-allowed"
+            : "bg-blue-600 hover:bg-blue-700"
+        }
+        ${className}
+      `}
     >
-      {ButtonName}
+      {children}
     </button>
   );
-}
+};
 
 export default Button;

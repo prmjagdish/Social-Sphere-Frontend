@@ -26,7 +26,7 @@ const Sidebar = () => {
     <>
       <aside className="hidden md:flex flex-col w-60 h-screen bg-white text-gray-900 shadow-lg">
         <div className="px-6 py-6 border-b border-gray-200 flex items-center justify-center">
-          <img src="src/assets/logo.png" alt="" className="w-30 h-20" />
+          <img src=".././logo.png" alt="" className="h-12" />
         </div>
 
         <nav className="flex-1 flex flex-col gap-2 mt-6 px-4">
