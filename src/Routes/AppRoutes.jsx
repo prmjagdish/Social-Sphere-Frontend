@@ -15,6 +15,7 @@ import { CreatePost, ProtectedRoute } from "@components";
 const AppRoutes = () => {
   return (
     <Routes>
+       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/verify-otp" element={<VerifyOTPPage />} />
       <Route path="/login" element={<Login />} />
