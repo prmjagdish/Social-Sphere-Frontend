@@ -9,4 +9,6 @@ export { default as FollowerAndFollowing } from "./FollowerAndFollowing";
 export { default as PostThumbnail } from "./PostThumbnail";
 export { default as SavedThumbnail } from "./SavedThumbnail";
 export { default as ReelThumbnail } from "./ReelThumbnail";
+export { default as ProfileEditForm } from "./ProfileEditForm";
+export { default as ReelCard } from "./ReelCard";
 
