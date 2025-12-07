@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
-import ProfileHeader from "../Components/ProfileHeader";
-import dummyReels from "../Data/Reel";
-import savedPosts from "../Data/Saved";
+import ProfileHeader from "@components/ProfileHeader";
+import dummyReels from "@data/Reel";
+import savedPosts from "@data/saved";
 import PostThumbnail from "../Components/PostThumbnail";
-import SavedThumbnail from "../Components/SavedThumbnail";
-import ReelThumbnail from "../Components/ReelThumbnail";
-import { ProfileContext } from "../Context/ProfileContext";
+import SavedThumbnail from "@components/SavedThumbnail";
+import ReelThumbnail from "@components/ReelThumbnail";
+import { ProfileContext } from "@context/ProfileContext";
 import { useNavigate } from "react-router-dom";
 
 

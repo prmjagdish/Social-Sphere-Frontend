@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import MainLayout from "../Layouts/MainLayout";
-import PostCard from "../Components/PostCard";
-import { fetchFeedPosts } from "../api/posts";
+import MainLayout from "@layouts/MainLayout";
+import PostCard from "@components/PostCard";
+import { fetchFeedPosts } from "@api/posts";
 import { useLocation } from "react-router-dom";
 
 const HomePage = () => {

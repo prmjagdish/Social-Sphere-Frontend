@@ -9,7 +9,7 @@ import {
   FaRegBookmark,
 } from "react-icons/fa";
 
-import dummyReels from "../Data/Reel";
+import dummyReels from "@data/Reel";
 
 const ReelsPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);

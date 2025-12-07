@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { ProfileContext } from "../Context/ProfileContext";
+import { ProfileContext } from "@context/ProfileContext.jsx";
 import FollowerAndFollowing from "./FollowerAndFollowing";
 import ProfileEditForm from "./ProfileEditForm";
 import { FaShareAlt } from "react-icons/fa";

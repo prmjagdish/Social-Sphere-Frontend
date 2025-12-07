@@ -1,5 +1,5 @@
 import React from "react";
-import user from "../Data/User";
+import user from "@data/user";
 import { useState } from "react";
 
 const MainLayout = ({ children }) => {

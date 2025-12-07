@@ -18,7 +18,8 @@ export default defineConfig({
       "@routes": path.resolve(__dirname, "src/routes"),
       "@utils": path.resolve(__dirname, "src/utils"),
       "@assets": path.resolve(__dirname, "src/assets"),
-      "@public": path.resolve(__dirname, "public")
+      "@public": path.resolve(__dirname, "public"),
+      "@data": path.resolve(__dirname, "src/data"),
     }
   },
   base: '/', 

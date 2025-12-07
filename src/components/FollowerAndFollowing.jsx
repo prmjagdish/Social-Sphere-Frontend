@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import user from "../Data/User";
+import user from "@data/user";
 
 const FollowerAndFollowing = ({ followers, following }) => {
   const [showModal, setShowModal] = useState(null);

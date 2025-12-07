@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { ProfileContext } from "./ProfileContext";
-import { getMyProfile } from "../api/profile";
+import { ProfileContext } from "./ProfileContext.jsx";
 
 const ProfileProvider = ({ children }) => {
   const [profile, setProfile] = useState(null);

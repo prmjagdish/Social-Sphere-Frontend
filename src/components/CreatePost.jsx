@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ProfileContext } from "../Context/ProfileContext";
-import { uploadPostOrReel } from "../api/posts";
+import { ProfileContext } from "@context/ProfileContext.jsx";
+import  {uploadPostOrReel } from "../api/posts";
 
 const CreatePost = () => {
   const [activeTab, setActiveTab] = useState("post");

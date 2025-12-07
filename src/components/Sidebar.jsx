@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ProfileContext } from "../Context/ProfileContext";
+import { ProfileContext } from "@context/ProfileContext.jsx";
 import {
   FaHome,
   FaSearch,
