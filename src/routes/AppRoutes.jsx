@@ -8,9 +8,10 @@ import {
   ReelsPage,
   HomePage,
   SearchPage,
+  
 } from "@pages";
 import { Layout } from "@layouts";
-import { CreatePost, ProtectedRoute } from "@components";
+import { CreatePost, ProtectedRoute} from "@components";
 
 const AppRoutes = () => {
   return (
@@ -24,9 +25,9 @@ const AppRoutes = () => {
         <Route element={<Layout />}>
           <Route path="/home" element={<HomePage />} />
           <Route path="/reels" element={<ReelsPage />} />
-          <Route path="/profile/:username" element={<ProfilePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/create" element={<CreatePost />} />
         </Route>
       </Route>
     </Routes>

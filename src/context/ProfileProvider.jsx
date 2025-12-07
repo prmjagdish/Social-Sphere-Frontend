@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
 import { ProfileContext } from "./ProfileContext.jsx";
+import { getMyProfile } from "@api/profile.js";
 
 const ProfileProvider = ({ children }) => {
   const [profile, setProfile] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchProfile = async () => {
-  //     try {
-  //       const data = await getMyProfile();
-  //       setProfile(data);
-  //     } catch (err) {
-  //       console.error("Error fetching profile:", err);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await getMyProfile();
+        setProfile(data);
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+      }
+    };
 
-  //   fetchProfile();
-  // }, []);
+    fetchProfile();
+  }, []);
 
   
 

@@ -83,7 +83,7 @@ const Register = () => {
           <img
             src={Logo}
             alt="SocialMeet Logo"
-            className="h-14 object-contain"
+            className="h-12 object-contain"
           />
         </div>
 
