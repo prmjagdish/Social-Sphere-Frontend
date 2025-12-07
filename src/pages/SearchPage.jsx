@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import user from "@data/user";
+import user from "@data/User";
 
 const SearchPage = () => {
 
