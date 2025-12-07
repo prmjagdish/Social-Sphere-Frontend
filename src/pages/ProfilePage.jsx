@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import ProfileHeader from "@components/ProfileHeader";
 import dummyReels from "@data/Reel";
-import savedPosts from "@data/saved";
+import savedPosts from "@data/Saved";
 import PostThumbnail from "@components/PostThumbnail";
 import SavedThumbnail from "@components/SavedThumbnail";
 import ReelThumbnail from "@components/ReelThumbnail";
