@@ -7,8 +7,7 @@ import { InputField, Button } from "@components";
 import { registerValidationSchema, debounce } from "@utils";
 import {
   registerUser,
-  checkUsernameAvailable,
-  sendOTP,
+  checkUsernameAvailable
 } from "@api/authService";
 
 const Register = () => {
@@ -30,8 +29,7 @@ const Register = () => {
       setSubmitting(true);
       try {
         await registerUser(values);
-        await sendOTP(values.email);
-        navigate("/verify-otp", { state: { email: values.email } });
+        navigate("/verify-otp", { state: { email: values.email} });
       } catch (error) {
         setErrors({
           general: error.message || "Something went wrong. Please try again.",

@@ -16,12 +16,7 @@ export const checkUsernameAvailable = async (username) => {
   const res = await api.get(`${AUTH_ENDPOINTS.CHECK_USERNAME}?username=${username}`);
   return res.data.available; 
 };
-
-export const sendOTP = async (email) => {
-  const response = await api.post(AUTH_ENDPOINTS.SEND_OTP, { email });
-  return response.data;
-}
-
+  
 export const verifyOTP = async ({ email, otp }) => {
   const response = await api.post(AUTH_ENDPOINTS.VERIFY_OTP, { email, otp });
   return response.data;

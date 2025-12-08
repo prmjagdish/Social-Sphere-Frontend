@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Button, InputField } from "@components";
-import { verifyOTP, sendOTP } from "@api/authService";
+import { verifyOTP } from "@api/authService";
 
 const VerifyOTPPage = () => {
   const [otp, setOtp] = useState("");
@@ -27,7 +27,6 @@ const VerifyOTPPage = () => {
   };
 
   const handleResend = async () => {
-    await sendOTP(email);
     setError("");
   };
 
